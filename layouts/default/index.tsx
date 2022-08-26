@@ -31,7 +31,10 @@ export function DefaultLayout({ children }: Props) {
           <Header />
         </GridItem>
 
-        <GridItem area={'nav'}>
+        <GridItem
+          area={'nav'}
+
+        >
           <Nav />
         </GridItem>
 
