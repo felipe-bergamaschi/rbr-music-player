@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { NavItem } from '@components'
+import { NavItem } from '@components/NavItem'
 
 import { Container } from '@chakra-ui/react'
 

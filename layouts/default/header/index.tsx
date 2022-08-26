@@ -23,7 +23,7 @@ export function Header() {
       templateAreas={`"logo search profile" `}
       gridTemplateColumns={[
         '200px auto auto',
-        '256px auto auto'
+        '232px auto auto'
       ]}
       h='64px'
       px={6}

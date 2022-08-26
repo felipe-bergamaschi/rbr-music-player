@@ -17,6 +17,7 @@ const colors = {
   },
   text: {
     900: '#fff',
+    700: '#aaa',
     500: '#ffffff80',
     50: '#ffffff33'
   }

@@ -7,11 +7,9 @@ type Props = {
 export function Main({ children }: Props) {
   return (
     <Container
-      // maxW='100vw'
-      // height='100vh'
-      // bg='brand.900'
-      color='white'
-    // centerContent
+      maxW='100%'
+      height='100%'
+      p={0}
     >
       {children}
     </Container>
