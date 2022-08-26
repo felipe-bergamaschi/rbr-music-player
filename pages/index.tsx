@@ -74,14 +74,6 @@ const Home: NextPage = () => {
     setPlayer((value) => ({ ...value, playing: !value.playing }))
   }
 
-  function handleProgress(state: ProgressProps) {
-    console.log('onProgress')
-    // We only want to update time slider if we are not currently seeking
-    // if (!state.seeking) {
-    //   setPlayer(state)
-    // }
-  }
-
   useEffect(() => {
     setPlayer((value) => ({ ...value, visible: true, }))
   }, [])
@@ -180,7 +172,6 @@ const Home: NextPage = () => {
             playbackRate={player.playbackRate}
             volume={player.volume}
             muted={player.muted}
-            onProgress={e => console.log('onSeek2', e)}
           />
         )}
       </Container>
