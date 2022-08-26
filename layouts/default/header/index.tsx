@@ -26,7 +26,11 @@ export function Header() {
         '232px auto auto'
       ]}
       h='64px'
-      px={6}
+      px={[
+        4,
+        4,
+        6
+      ]}
     >
       <GridItem
         area={'logo'}

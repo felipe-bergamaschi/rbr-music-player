@@ -10,21 +10,37 @@ type Props = {
 }
 
 export function DefaultLayout({ children }: Props) {
+  const smNav = `
+    "header"
+    "main"
+  `
+
+  const mdNav = `
+    "header header"
+    "nav main"
+  `
+
   return (
     <Container
       maxW='100vw'
+      minW='360px'
       h='100vh'
       bg='brand.900'
       color='white'
       p={0}
     >
       <Grid
-        templateAreas={`
-          "header header"
-          "nav main"
-        `}
+        templateAreas={[
+          smNav,
+          smNav,
+          mdNav,
+        ]}
         gridTemplateRows={'64px 1fr'}
-        gridTemplateColumns={'256px 1fr'}
+        gridTemplateColumns={[
+          '1fr',
+          '1fr',
+          '256px 1fr'
+        ]}
         h='100vh'
       >
         <GridItem bg='brand.800' area={'header'}>
@@ -33,7 +49,12 @@ export function DefaultLayout({ children }: Props) {
 
         <GridItem
           area={'nav'}
-
+          display={[
+            'none',
+            'none',
+            'block',
+            'block'
+          ]}
         >
           <Nav />
         </GridItem>

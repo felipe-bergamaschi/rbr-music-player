@@ -47,6 +47,7 @@ export function MusicItem({ artist, bg, id, image, musicName, url }: SoundProps)
             fontSize='xs'
             fontWeight='medium'
             color='text.700'
+            noOfLines={1}
           >
             {musicName}
           </Text>

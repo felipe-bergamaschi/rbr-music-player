@@ -15,7 +15,11 @@ const Home: NextPage = () => {
       <Flex p={0} height='100%'>
         <Flex
           maxW='100%'
-          p={6}
+          p={[
+            4,
+            4,
+            6,
+          ]}
           flex={1}
           flexDirection='column'
         >
@@ -44,12 +48,14 @@ const Home: NextPage = () => {
           flex={1}
           bg={sounds[0].bg}
           overflow='hidden'
-        // bgImage={sounds[0].image}
-        // bgRepeat='no-repeat'
-        // bgSize='cover'
-        // style={{ filter: 'blur(8px)' }}
+          display={[
+            'none',
+            'none',
+            'none',
+            'none',
+            'flex',
+          ]}
         >
-
           <Image
             zIndex='0'
             position='absolute'
@@ -61,8 +67,6 @@ const Home: NextPage = () => {
             borderRadius={5}
             style={{ filter: 'blur(24px)' }}
             opacity={.7}
-          // w={52}
-          // h={52}
           />
 
           <Image
@@ -71,7 +75,6 @@ const Home: NextPage = () => {
             w={52}
             h={52}
           />
-
         </Center>
       </Flex>
 
