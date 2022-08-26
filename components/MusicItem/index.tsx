@@ -1,8 +1,13 @@
-import { Icon, Text, Flex, Avatar } from '@chakra-ui/react'
+import { Icon, Text, Flex, Image } from '@chakra-ui/react'
 import { MdPlayCircleOutline, MdOutlineFavorite } from 'react-icons/md'
 import { SoundProps } from '@services'
 
-export function MusicItem({ artist, bg, id, image, musicName, url }: SoundProps) {
+type Props = {
+  sound: SoundProps,
+  onClick: (sound: SoundProps) => void
+}
+
+export function MusicItem({ sound, onClick }: Props) {
   return (
     <Flex
       maxW='100%'
@@ -16,6 +21,7 @@ export function MusicItem({ artist, bg, id, image, musicName, url }: SoundProps)
         bg: 'brand.50'
       }}
       borderRadius={6}
+      onClick={() => onClick(sound)}
     >
       <Flex
         alignItems='center'
@@ -25,11 +31,11 @@ export function MusicItem({ artist, bg, id, image, musicName, url }: SoundProps)
           fontSize='sm'
           fontWeight='medium'
         >
-          {id}
+          {sound.id}
         </Text>
 
-        <Avatar
-          src={image}
+        <Image
+          src={sound.image}
           borderRadius={5}
           w={10}
           h={10}
@@ -40,7 +46,7 @@ export function MusicItem({ artist, bg, id, image, musicName, url }: SoundProps)
             fontSize='sm'
             fontWeight='medium'
           >
-            {artist}
+            {sound.artist}
           </Text>
 
           <Text
@@ -49,7 +55,7 @@ export function MusicItem({ artist, bg, id, image, musicName, url }: SoundProps)
             color='text.700'
             noOfLines={1}
           >
-            {musicName}
+            {sound.musicName}
           </Text>
         </Flex>
       </Flex>

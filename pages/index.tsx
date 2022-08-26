@@ -3,13 +3,89 @@ import { DefaultLayout } from '@layouts'
 import { Container, Flex, Center, Image } from '@chakra-ui/react'
 
 import ReactPlayer from "react-player"
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-import { sounds } from '@services'
+import { sounds, SoundProps } from '@services'
 import { MusicItem } from '@components/MusicItem'
 import { Title } from '@components/Title'
+import { MusicPlayer } from '@components/MusicPlayer'
+
+type state = {
+  url: string | undefined;
+  pip: boolean;
+  playing: boolean;
+  controls: boolean;
+  light: boolean;
+  volume: number;
+  muted: boolean;
+  played: number;
+  loaded: number;
+  duration: number;
+  playbackRate: number;
+  loop: boolean;
+  visible: boolean;
+}
+
+type ProgressProps = {
+  played: number;
+  playedSeconds: number;
+  loaded: number;
+  loadedSeconds: number;
+}
 
 const Home: NextPage = () => {
+  const ref = useRef(null)
+  const [currentMusic, setCurrentMusic] = useState<SoundProps | null>(null)
+  const [player, setPlayer] = useState<state>({
+    url: undefined,
+    pip: false,
+    playing: true,
+    controls: false,
+    light: false,
+    volume: 0.8,
+    muted: false,
+    played: 0,
+    loaded: 0,
+    duration: 0,
+    playbackRate: 1.0,
+    loop: false,
+    visible: false,
+  })
+
+  function handlePlay(sound: SoundProps) {
+    if (sound.id !== currentMusic?.id) setCurrentMusic(sound)
+
+    setPlayer((value) => ({
+      ...value,
+      url: sound.url,
+      played: 0,
+      playing: true,
+      loaded: 0,
+      pip: false
+    }))
+  }
+
+  function handlePlayStop() {
+    setCurrentMusic(null)
+    setPlayer((value) => ({ ...value, url: undefined, playing: false }))
+  }
+
+  function handlePause() {
+    setPlayer((value) => ({ ...value, playing: !value.playing }))
+  }
+
+  function handleProgress(state: ProgressProps) {
+    console.log('onProgress')
+    // We only want to update time slider if we are not currently seeking
+    // if (!state.seeking) {
+    //   setPlayer(state)
+    // }
+  }
+
+  useEffect(() => {
+    setPlayer((value) => ({ ...value, visible: true, }))
+  }, [])
+
   return (
     <DefaultLayout>
       <Flex p={0} height='100%'>
@@ -30,12 +106,8 @@ const Home: NextPage = () => {
           {sounds.map((sound) => (
             <MusicItem
               key={sound.id}
-              artist={sound.artist}
-              bg={sound.bg}
-              id={sound.id}
-              image={sound.image}
-              musicName={sound.musicName}
-              url={sound.url}
+              sound={sound}
+              onClick={handlePlay}
             />
           ))}
         </Flex>
@@ -46,7 +118,7 @@ const Home: NextPage = () => {
           maxH='100%'
           px={6}
           flex={1}
-          bg={sounds[0].bg}
+          bg={currentMusic?.bg ? currentMusic.bg : 'transparent'}
           overflow='hidden'
           display={[
             'none',
@@ -56,44 +128,62 @@ const Home: NextPage = () => {
             'flex',
           ]}
         >
-          <Image
-            zIndex='0'
-            position='absolute'
-            top={0}
-            left={0}
-            w='100%'
-            h='100%'
-            src={sounds[0].image}
-            borderRadius={5}
-            style={{ filter: 'blur(24px)' }}
-            opacity={.7}
-          />
+          {currentMusic && (<>
+            <Image
+              zIndex='0'
+              position='absolute'
+              top={0}
+              left={0}
+              w='100%'
+              h='100%'
+              src={currentMusic.image}
+              borderRadius={5}
+              style={{ filter: 'blur(24px)' }}
+              opacity={.7}
+            />
 
-          <Image
-            zIndex='1'
-            src={sounds[0].image}
-            w={52}
-            h={52}
-          />
+            <Image
+              zIndex='1'
+              src={currentMusic.image}
+              w={52}
+              h={52}
+            />
+          </>)}
         </Center>
       </Flex>
 
-      {/* <ReactPlayer
-        // playing={state}
+      <MusicPlayer
+        sound={currentMusic}
+        playing={player?.playing}
+        onPausePlay={handlePause}
+        onStop={handlePlayStop}
+      />
 
-        url="https://soundcloud.com/ellaeyre/alok-ella-eyre-kenny-dope-feat-never-dull-deep-down"
-      /> */}
-
-      {/* <h1>asdasd</h1> */}
-      {/* <iframe
-        width="100%"
-        height="450"
-        scrolling="no"
-        // frameborder="no"
-        allow="autoplay"
-        src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1488114664&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
+      <Container
+        position='absolute'
+        bottom={0}
+        left={0}
+        zIndex={-1}
       >
-      </iframe> */}
+        {player.visible && (
+          <ReactPlayer
+            ref={ref}
+            className='react-player'
+            width='1px'
+            height='1px'
+            url={player.url}
+            pip={player.pip}
+            playing={player.playing}
+            controls={player.controls}
+            light={player.light}
+            loop={player.loop}
+            playbackRate={player.playbackRate}
+            volume={player.volume}
+            muted={player.muted}
+            onProgress={e => console.log('onSeek2', e)}
+          />
+        )}
+      </Container>
     </DefaultLayout>
   )
 }
